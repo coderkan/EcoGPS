@@ -2,6 +2,7 @@ package ecogps.eg.com.ecogps;
 
 import android.*;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +15,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -47,6 +50,9 @@ public class EcoGpsMapActivity extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
+
+
 
     public void checkPermission(){
         permissions.clear();
@@ -138,7 +144,25 @@ public class EcoGpsMapActivity extends FragmentActivity implements OnMapReadyCal
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
+        //LatLng sydney = new LatLng(-37.35, -122.0);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+
+        // Instantiates a new Polyline object and adds points to define a rectangle
+        PolylineOptions rectOptions = new PolylineOptions()
+                .add(new LatLng(-34, 151.0))
+                .add(new LatLng(-34.40, 151.0))
+                .add(new LatLng(-34.40, 151.3))
+                .add(new LatLng(-34, 151.3));
+
+//                .add(new LatLng(37.35, -122.0))
+//                .add(new LatLng(37.45, -122.0))  // North of the previous point, but at the same longitude
+//                .add(new LatLng(37.45, -122.2))  // Same latitude, and 30km to the west
+//                .add(new LatLng(37.35, -122.2))  // Same longitude, and 16km to the south
+//                .add(new LatLng(37.35, -122.0)); // Closes the polyline.
+
+        // Get back the mutable Polyline
+        Polyline polyline = mMap.addPolyline(rectOptions);
     }
 }
